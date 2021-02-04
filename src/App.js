@@ -4,15 +4,16 @@ import { addBird, incrementBird } from "./features/birdReducerActions";
 import "./App.css";
 
 function App() {
+  console.log("In the app.js");
   const listOfBirds = useSelector((state) => state.birds.listOfBirds);
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
-  const renderBirds = listOfBirds.map(({ name, views }) => {
+  const renderBirds = listOfBirds.map(({ name, views }, index) => {
     return (
-      <div>
+      <div key={index}>
         <h1>{name}</h1>
         <h3>{views}</h3>
-        <button onClick={dispatch(incrementBird(name))}></button>
+        <button onClick={() => dispatch(incrementBird(name))}>Add view</button>
       </div>
     );
   });

@@ -9,8 +9,21 @@ const birdReducer = (state = initialState, action) => {
       return { ...state, listOfBirds: [...listOfBirds, action.payload] };
     },
     "birds/incrementBird": () => {
+      const indexOfBird = state.listOfBirds.findIndex(
+        (element) => element.name === action.payload
+      );
+      let { name, views } = state.listOfBirds[indexOfBird];
+      const newviews = views + 1;
+      let newBird = { name, views: newviews };
+      console.log("This is the NEwBird", newBird);
+      // I know. I should be using Immer
       return {
         ...state,
+        listOfBirds: [
+          ...state.listOfBirds.slice(0, indexOfBird),
+          newBird,
+          ...state.listOfBirds.slice(indexOfBird + 1),
+        ],
       };
     },
   };
