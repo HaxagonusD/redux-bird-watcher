@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { addBird, incrementBird } from "./features/birdReducerActions";
+import "./App.css";
 
 function App() {
+  const listOfBirds = useSelector((state) => state.birds.listOfBirds);
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const renderBirds = listOfBirds.map(({ name, views }) => {
+    return (
+      <div>
+        <h1>{name}</h1>
+        <h3>{views}</h3>
+        <button onClick={dispatch(incrementBird(name))}></button>
+      </div>
+    );
+  });
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Birds</h1>
+      <input
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="BirdName"
+        value={search}
+      />
+      <button onClick={() => dispatch(addBird({ name: search, views: 1 }))}>
+        Add Bird
+      </button>
+      {renderBirds}
     </div>
   );
 }
